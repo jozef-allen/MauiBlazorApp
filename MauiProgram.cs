@@ -25,13 +25,19 @@ namespace MauiBlazorApp
 
             builder.Services.AddSingleton<WeatherForecastService>();
 
+            // Add your API service registration
             builder.Services.AddTransient<IMyApiService, MyApiService>();
             builder.Services.AddHttpClient<IMyApiService, MyApiService>(client =>
             {
-                client.BaseAddress = new Uri("https://localhost:your_api_port/");
+                client.BaseAddress = new Uri("http://10.0.2.2:5157/");
+            })
+            .ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler
+            {
+                ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => true
             });
 
             return builder.Build();
         }
+
     }
 }
