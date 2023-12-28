@@ -1,8 +1,5 @@
-﻿using Microsoft.AspNetCore.Components.WebView.Maui;
-using MauiBlazorApp.Data;
-using MauiBlazorApp.Services;
+﻿using MauiBlazorApp.Services;
 using MauiBlazorApp.Interfaces;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace MauiBlazorApp
 {
@@ -22,8 +19,6 @@ namespace MauiBlazorApp
 #if DEBUG
             builder.Services.AddBlazorWebViewDeveloperTools();
 #endif
-
-            builder.Services.AddSingleton<WeatherForecastService>();
 
             // Add your API service registration
             builder.Services.AddTransient<IMyApiService, MyApiService>();

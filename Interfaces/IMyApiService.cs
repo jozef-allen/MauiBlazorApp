@@ -15,6 +15,5 @@ namespace MauiBlazorApp.Interfaces
         Task<HttpStatusCode> AddUser(UserDTO newUser);
         Task<HttpStatusCode> UpdateUser(UserDTO updatedUser);
         Task<HttpStatusCode> DeleteUser(int userId);
-        // Add other methods as needed
     }
 }
