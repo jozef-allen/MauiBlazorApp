@@ -1,4 +1,6 @@
 ﻿@page "/registration"
+@using Interfaces;
+@inject IAppService AppService;
 @using MauiBlazorApp.Models;
 
 <h3>Registration</h3>
@@ -56,15 +58,30 @@
     </div>
 
     <div class="text-center mt-2">
-        <button class="btn btn-primary" type="submit">Register</button>
+        <button class="btn btn-primary" type="submit">
+        <span class="@_spinnerClass" role="status" aria-hidden="true"></span>
+            Register
+        </button>
     </div>
 </EditForm>
 
 @code {
     RegistrationModel registrationModel = new();
-
-    private void Submit()
+    private string _spinnerClass = "";
+    private async void Submit()
     {
-        
+        _spinnerClass = "spinner-border spinner-border-sm";
+        await Task.Delay(500);
+        var response = await AppService.RegisterUser(registrationModel);
+        if (response.IsSuccess)
+        {
+            await App.Current.MainPage.DisplayAlert("Success", "User registered", "OK");
+        }
+        else
+        {
+            await App.Current.MainPage.DisplayAlert("Sorry", response.ErrorMessage, "OK");
+        }
+        _spinnerClass = "";
+        this.StateHasChanged();
     }
 }

@@ -20,12 +20,10 @@ namespace MauiBlazorApp.Services
         {
             string returnStr = string.Empty;
 
-            // Serialize the loginModel only once
             var serializedStr = JsonConvert.SerializeObject(loginModel);
 
             var content = new StringContent(serializedStr, Encoding.UTF8, "application/json");
 
-            // Use the same content instance for multiple requests
             var response = await _httpClient.PostAsync("api/Registration/AuthenticateUser", content);
 
             if (response.IsSuccessStatusCode)
@@ -34,6 +32,24 @@ namespace MauiBlazorApp.Services
             }
 
             return returnStr;
+        }
+
+        public async Task<(bool IsSuccess, string ErrorMessage)> RegisterUser(RegistrationModel registerUser)
+        {
+            string errorMessage = string.Empty;
+            bool isSuccess = false;
+            
+            var serializedStr = JsonConvert.SerializeObject(registerUser);
+            var content = new StringContent(serializedStr, Encoding.UTF8, "application/json");
+            var response = await _httpClient.PostAsync("api/Registration/RegisterUser", content);
+            if (response.IsSuccessStatusCode)
+            {
+                isSuccess = true;
+            } else
+            {
+                errorMessage= await response.Content.ReadAsStringAsync();
+            }
+            return (isSuccess, errorMessage);
         }
     }
 }
