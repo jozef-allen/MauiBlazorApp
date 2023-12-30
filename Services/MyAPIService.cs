@@ -17,6 +17,8 @@ namespace MauiBlazorApp.Services
         public MyApiService(HttpClient httpClient)
         {
             _httpClient = httpClient;
+
+            _httpClient.Timeout = TimeSpan.FromSeconds(10);
         }
 
         public async Task<List<UserDTO>> GetUsers()

@@ -14,6 +14,8 @@ namespace MauiBlazorApp.Services
         public AppService(HttpClient httpClient)
         {
             _httpClient = httpClient;
+
+            _httpClient.Timeout = TimeSpan.FromSeconds(10);
         }
 
         public async Task<string> AuthenticateUser(LoginModel loginModel)
