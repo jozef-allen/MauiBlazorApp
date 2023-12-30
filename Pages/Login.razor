@@ -3,6 +3,12 @@
 @inject IAppService AppService;
 @inject IMyApiService MyApiService;
 @using MauiBlazorApp.Models;
+@using Newtonsoft.Json;
+@using MauiBlazorApp.Services
+@using System.IdentityModel.Tokens.Jwt
+@using System.Security.Claims
+@inject IAppService AppService;
+@inject NavigationManager NavManager;
 
 <h3>Login</h3>
 
@@ -53,19 +59,39 @@ else
     private async void Submit()
     {
         _spinnerClass = "spinner-border spinner-border-sm";
-        await Task.Delay(500);
         var response = await AppService.AuthenticateUser(loginModel);
         if (!string.IsNullOrWhiteSpace(response))
         {
-            await App.Current.MainPage.DisplayAlert("Success", "Valid username and password", "OK");
+            var handler = new JwtSecurityTokenHandler();
+            var jsontoken = handler.ReadToken(response) as JwtSecurityToken;
+
+            string userID = jsontoken.Claims.FirstOrDefault(f => f.Type == JwtRegisteredClaimNames.NameId).Value;
+            string name = jsontoken.Claims.FirstOrDefault(f => f.Type == JwtRegisteredClaimNames.UniqueName).Value;
+            string email = loginModel.UserName;
+
+            var userBasicDetail = new UserBasicDetail
+                {
+                    Email = email,
+                    Name = name,
+                    Token = response,
+                    UserID = userID
+                };
+
+            string userBasicInfoStr = JsonConvert.SerializeObject(userBasicDetail);
+            await SecureStorage.SetAsync(nameof(Setting.UserBasicDetail), userBasicInfoStr);
+            Setting.UserBasicDetail = userBasicDetail;
+
+            NavManager.NavigateTo("/dashboard");
         }
         else
         {
-            await App.Current.MainPage.DisplayAlert("Sorry", "Invalid username and password", "OK");
+            await App.Current.MainPage.DisplayAlert("Oops", "Invalid username or password", "OK");
         }
+
         _spinnerClass = "";
         this.StateHasChanged();
     }
+
     // protected override async Task OnInitializedAsync()
     // {
     //     userList = await MyApiService.GetUsers();
