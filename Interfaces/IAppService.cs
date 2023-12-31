@@ -11,5 +11,6 @@ namespace MauiBlazorApp.Interfaces
     {
         public Task<MainResponse> AuthenticateUser(LoginModel loginModel);
         public Task<(bool IsSuccess, string ErrorMessage)> RegisterUser(RegistrationModel registerUser);
+        public Task<MainResponse> RefreshToken(AuthenticationResponse twoTokens);
     }
 }

@@ -64,7 +64,7 @@ else
 
         if (response.IsSuccess)
         {
-            // Successful login
+           
             var handler = new JwtSecurityTokenHandler();
             var jsontoken = handler.ReadToken(response.Content.AccessToken) as JwtSecurityToken;
 
@@ -76,7 +76,8 @@ else
                 {
                     Email = email,
                     Name = name,
-                    Token = response.Content.AccessToken,
+                    AccessToken = response.Content.AccessToken,
+                    RefreshToken = response.Content.RefreshToken,
                     UserID = userID
                 };
 

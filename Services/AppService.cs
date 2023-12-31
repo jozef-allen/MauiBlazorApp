@@ -15,7 +15,7 @@ namespace MauiBlazorApp.Services
         {
             _httpClient = httpClient;
 
-            _httpClient.Timeout = TimeSpan.FromSeconds(10);
+            _httpClient.Timeout = TimeSpan.FromSeconds(1000);
         }
 
         //public async Task<string> AuthenticateUser(LoginModel loginModel)
@@ -65,6 +65,35 @@ namespace MauiBlazorApp.Services
 
             return returnResponse;
         }
+
+        public async Task<MainResponse> RefreshToken(AuthenticationResponse twoTokens)
+        {
+            var returnResponse = new MainResponse();
+            var serializedStr = JsonConvert.SerializeObject(twoTokens);
+            var content = new StringContent(serializedStr, Encoding.UTF8, "application/json");
+
+            var response = await _httpClient.PostAsync("api/Registration/RefreshToken", content);
+
+            if (response.IsSuccessStatusCode)
+            {
+                string contentStr = await response.Content.ReadAsStringAsync();
+                returnResponse = JsonConvert.DeserializeObject<MainResponse>(contentStr);
+            }
+            else if (response.StatusCode == HttpStatusCode.BadRequest)
+            {
+                // Handle BadRequest response
+                string errorContent = await response.Content.ReadAsStringAsync();
+                returnResponse.ErrorMessage = $"Error: {response.StatusCode}, {errorContent}";
+            }
+            else
+            {
+                // Handle other non-successful responses
+                returnResponse.ErrorMessage = $"Error: {response.StatusCode}";
+            }
+
+            return returnResponse;
+        }
+
 
 
 
