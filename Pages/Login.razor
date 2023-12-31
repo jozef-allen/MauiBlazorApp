@@ -66,7 +66,7 @@ else
         {
             // Successful login
             var handler = new JwtSecurityTokenHandler();
-            var jsontoken = handler.ReadToken(response.Token) as JwtSecurityToken;
+            var jsontoken = handler.ReadToken(response.Content.AccessToken) as JwtSecurityToken;
 
             string userID = jsontoken.Claims.FirstOrDefault(f => f.Type == JwtRegisteredClaimNames.NameId).Value;
             string name = jsontoken.Claims.FirstOrDefault(f => f.Type == JwtRegisteredClaimNames.UniqueName).Value;
@@ -76,7 +76,7 @@ else
                 {
                     Email = email,
                     Name = name,
-                    Token = response.Token,
+                    Token = response.Content.AccessToken,
                     UserID = userID
                 };
 

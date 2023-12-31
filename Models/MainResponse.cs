@@ -7,11 +7,10 @@ using System.Threading.Tasks;
 
 namespace MauiBlazorApp.Models
 {
-    public class AuthenticationResponse
+    public class MainResponse
     {
         public bool IsSuccess { get; set; }
-        public string? AccessToken { get; set; }
-        public string? RefreshToken { get; set; }
         public string? ErrorMessage { get; set; }
+        public AuthenticationResponse? Content { get; set; }
     }
 }

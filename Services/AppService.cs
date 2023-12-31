@@ -37,9 +37,9 @@ namespace MauiBlazorApp.Services
         //}
 
 
-        public async Task<AuthenticationResponse> AuthenticateUser(LoginModel loginModel)
+        public async Task<MainResponse> AuthenticateUser(LoginModel loginModel)
         {
-            var returnResponse = new AuthenticationResponse();
+            var returnResponse = new MainResponse();
 
             try
             {
@@ -49,8 +49,9 @@ namespace MauiBlazorApp.Services
 
                 if (response.IsSuccessStatusCode)
                 {
+                    // We use await response.Content.ReadAsStringAsync() to get the JSON string. Once we have the JSON string, we can use JsonConvert.DeserializeObject<MainResponse>() to deserialize it into a MainResponse object. This is coming as a HTTP response with a MainResponse inside.
+                    returnResponse = JsonConvert.DeserializeObject<MainResponse>(await response.Content.ReadAsStringAsync());
                     returnResponse.IsSuccess = true;
-                    returnResponse.Token = await response.Content.ReadAsStringAsync();
                 }
                 else
                 {
