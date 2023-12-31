@@ -18,23 +18,55 @@ namespace MauiBlazorApp.Services
             _httpClient.Timeout = TimeSpan.FromSeconds(10);
         }
 
-        public async Task<string> AuthenticateUser(LoginModel loginModel)
+        //public async Task<string> AuthenticateUser(LoginModel loginModel)
+        //{
+        //    string returnStr = string.Empty;
+
+        //    var serializedStr = JsonConvert.SerializeObject(loginModel);
+
+        //    var content = new StringContent(serializedStr, Encoding.UTF8, "application/json");
+
+        //    var response = await _httpClient.PostAsync("api/Registration/AuthenticateUser", content);
+
+        //    if (response.IsSuccessStatusCode)
+        //    {
+        //        returnStr = await response.Content.ReadAsStringAsync();
+        //    }
+
+        //    return returnStr;
+        //}
+
+
+        public async Task<AuthenticationResponse> AuthenticateUser(LoginModel loginModel)
         {
-            string returnStr = string.Empty;
+            var returnResponse = new AuthenticationResponse();
 
-            var serializedStr = JsonConvert.SerializeObject(loginModel);
-
-            var content = new StringContent(serializedStr, Encoding.UTF8, "application/json");
-
-            var response = await _httpClient.PostAsync("api/Registration/AuthenticateUser", content);
-
-            if (response.IsSuccessStatusCode)
+            try
             {
-                returnStr = await response.Content.ReadAsStringAsync();
+                var serializedStr = JsonConvert.SerializeObject(loginModel);
+                var content = new StringContent(serializedStr, Encoding.UTF8, "application/json");
+                var response = await _httpClient.PostAsync("api/Registration/AuthenticateUser", content);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    returnResponse.IsSuccess = true;
+                    returnResponse.Token = await response.Content.ReadAsStringAsync();
+                }
+                else
+                {
+                    returnResponse.ErrorMessage = $"Error: {response.StatusCode}";
+                }
+            }
+            catch (TaskCanceledException)
+            {
+                returnResponse.ErrorMessage = "The request timed out. Please check connection to the API.";
             }
 
-            return returnStr;
+            return returnResponse;
         }
+
+
+
 
         public async Task<(bool IsSuccess, string ErrorMessage)> RegisterUser(RegistrationModel registerUser)
         {

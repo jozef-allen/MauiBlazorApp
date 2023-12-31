@@ -1,8 +1,13 @@
-﻿@inherits LayoutComponentBase
+﻿@using MauiBlazorApp.Models;
+@inherits LayoutComponentBase
 
 <div class="page">
 	<div class="sidebar">
-		<NavMenu />
+		@* @if (Setting.UserBasicDetail! == null)
+		{ *@
+			<NavMenu />
+		@* } *@
+		
 	</div>
 
 	<main>

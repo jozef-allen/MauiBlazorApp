@@ -1,4 +1,4 @@
-﻿@page "/"
+﻿@page "/login"
 @using Interfaces;
 @inject IAppService AppService;
 @inject IMyApiService MyApiService;
@@ -59,11 +59,14 @@ else
     private async void Submit()
     {
         _spinnerClass = "spinner-border spinner-border-sm";
+
         var response = await AppService.AuthenticateUser(loginModel);
-        if (!string.IsNullOrWhiteSpace(response))
+
+        if (response.IsSuccess)
         {
+            // Successful login
             var handler = new JwtSecurityTokenHandler();
-            var jsontoken = handler.ReadToken(response) as JwtSecurityToken;
+            var jsontoken = handler.ReadToken(response.Token) as JwtSecurityToken;
 
             string userID = jsontoken.Claims.FirstOrDefault(f => f.Type == JwtRegisteredClaimNames.NameId).Value;
             string name = jsontoken.Claims.FirstOrDefault(f => f.Type == JwtRegisteredClaimNames.UniqueName).Value;
@@ -73,7 +76,7 @@ else
                 {
                     Email = email,
                     Name = name,
-                    Token = response,
+                    Token = response.Token,
                     UserID = userID
                 };
 
@@ -85,12 +88,16 @@ else
         }
         else
         {
-            await App.Current.MainPage.DisplayAlert("Oops", "Invalid username or password", "OK");
+            // Unsuccessful login
+            await App.Current.MainPage.DisplayAlert("Error", response.ErrorMessage, "OK");
         }
 
         _spinnerClass = "";
         this.StateHasChanged();
     }
+
+
+
 
     // protected override async Task OnInitializedAsync()
     // {

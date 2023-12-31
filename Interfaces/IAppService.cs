@@ -9,7 +9,7 @@ namespace MauiBlazorApp.Interfaces
 {
     public interface IAppService
     {
-        public Task<string> AuthenticateUser(LoginModel loginModel);
+        public Task<AuthenticationResponse> AuthenticateUser(LoginModel loginModel);
         public Task<(bool IsSuccess, string ErrorMessage)> RegisterUser(RegistrationModel registerUser);
     }
 }
