@@ -35,12 +35,12 @@ Loading...
 
                     if (refreshTokenResponse.IsSuccess)
                     {
-                        System.Diagnostics.Debug.WriteLine($"RefreshToken Response Content: {refreshTokenResponse.Content}");
+                        //System.Diagnostics.Debug.WriteLine($"RefreshToken Response Content: {refreshTokenResponse.Content}");
 
                         // Only deserialize AccessToken and RefreshToken from the JSON response
-                        var tokenDetails = refreshTokenResponse.Content;
-                        userBasicDetail.AccessToken = tokenDetails.AccessToken;
-                        userBasicDetail.RefreshToken = tokenDetails.RefreshToken;
+                        AuthenticationResponse authenticationResponse = refreshTokenResponse.Content;
+                        userBasicDetail.AccessToken = authenticationResponse.AccessToken;
+                        userBasicDetail.RefreshToken = authenticationResponse.RefreshToken;
 
                         userDetailsStr = JsonConvert.SerializeObject(userBasicDetail);
                         await SecureStorage.SetAsync(nameof(Setting.UserBasicDetail), userDetailsStr);
