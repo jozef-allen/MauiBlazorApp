@@ -40,7 +40,7 @@ I used tutorials from [@mistrypragnesh40](https://github.com/mistrypragnesh40/) 
 
 ### MySQL
 
-I set up a MySQL database to hold the user account information. My eventual goal with the app is to use a centralised database, rather than a SQLite database that would be local to the app and the device it sits on.
+I set up a MySQL database to hold the user account information. My eventual goal with the app will require a centralised database, so I opted for MySQL rather than a SQLite (which is local to the app and the device it sits on).
 
 ### API
 
@@ -54,7 +54,7 @@ It took a while to address issues with communication between the Android emulato
 
 ### Login flow
 
-Now that things were up-and-running, I implemented the registration and login system in the API and app code, and migrated this across to the database (code-first approach).
+Now that things were up-and-running, I implemented the registration and login system in the API and app code, and migrated this all across to the database (code-first approach).
 
 I created a JWT key and implemented access and refresh tokens. Currently the project is set to create access tokens that last for 5 seconds so the refresh functionality can easily be checked. This can easily be changed in RegistrationController.cs in the API. Upon receiving tokens, the app stores them in SecureStorage and they can be retrieved from there every time the root page (AppLaunch.razor) is loaded.
 
@@ -69,8 +69,8 @@ I created a JWT key and implemented access and refresh tokens. Currently the pro
 ### Challenges 
 
 - A time-consuming obstacle was figuring out how to get the Android emulator working instead of running the app in Windows Machine.
-- It also took a while to get Pomelo.EntityFrameworkCore.MySql working - this was because I was using a different database type.
-- Implementing error handling - for instance, for if the API is uncontactable - meant using a custom class that diverged from the tutorial. This then impacted all methods and took a while to implement.
+- It also took a while to get Pomelo.EntityFrameworkCore.MySql rather than the more standard, MySql.Data.EntityFrameworkCore working.
+- Implementing error handling - for instance, for if the API is uncontactable - meant using a custom class that diverged from the tutorial. This then impacted all methods and meant quite a few changes.
 
 ## Going forward
 
