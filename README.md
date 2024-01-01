@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-This is a MAUI Blazor Hybrid app that integrates with a custom API to handle user registration, login and token-based authentication. I plan to use this registration and login UI to build out a full app in the future. 
+This is a MAUI Blazor Hybrid app that integrates with a custom API and a MySQL database to handle user registration, login and token-based authentication. I plan to use this registration and login UI to build out a full app in the future. 
 
 The repo for the API it uses is here: https://github.com/jozef-allen/database_api.
 
