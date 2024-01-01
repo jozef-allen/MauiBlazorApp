@@ -1,4 +1,4 @@
-﻿# MAUI Blazor Hybrid App with API Integration for Secure Login Flow
+﻿# MAUI Blazor Hybrid App with API Integration for Secure Registration and Login Flow
 
 ## Project Overview
 
